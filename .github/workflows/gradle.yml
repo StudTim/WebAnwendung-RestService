@@ -15,7 +15,7 @@ on:
 
 jobs:
       
-  buildJar:
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -36,11 +36,6 @@ jobs:
       with:
         name: RestService-Jar
         path: ./build/libs/*.jar
-      
-  sonarCloud:
-    runs-on: ubuntu-latest
-    needs: [buildJar]
-    steps:
     - name: Cache SonarCloud packages
       uses: actions/cache@v1
       with:
@@ -53,33 +48,26 @@ jobs:
         path: ~/.gradle/caches
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
         restore-keys: ${{ runner.os }}-gradle
-    - name: Change gradle wrapper permissions
-      run: chmod +x ./gradlew
     - name: Build and analyze
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: ./gradlew build sonarqube --info
-    
-  docker:
-    runs-on: ubuntu-latest
-    needs: [buildJar, sonarCloud]
-    steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        uses: docker/login-action@v1 
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: studtim/webanwendung-restservice:latest
-          # Path to the Dockerfile
-          file: ./Dockerfile
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: studtim/webanwendung-restservice:latest
+        # Path to the Dockerfile
+        file: ./Dockerfile
   
