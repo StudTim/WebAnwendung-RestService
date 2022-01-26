@@ -32,7 +32,7 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag studtim/webanwendung-restservice:latest
+      run: docker build . --file Dockerfile --tag studtim/webanwendung-restservice:github
     - name: Push Docker Image
-      run: docker push studtim/webanwendung-restservice:latest
+      run: docker push studtim/webanwendung-restservice:github
         
