@@ -53,27 +53,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: ./gradlew build sonarqube --info
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v1
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1  
-      with:
-        version: v0.7.0
-    - name: Login to DockerHub
-      uses: docker/login-action@v1 
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Test Jar File Root Verzeichnis
-      run: ls -al ./
-    - name: Test Jar File Libs Verzeichnis
-      run: ls -al ./build/libs/
-    - name: Build and push
-      id: docker_build
-      uses: docker/build-push-action@v2.8.0
-      with:
-        push: true
-        tags: studtim/webanwendung-restservice:latest
-        # Path to the Dockerfile
-        file: ./Dockerfile
   
