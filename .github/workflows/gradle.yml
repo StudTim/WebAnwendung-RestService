@@ -62,6 +62,10 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Test Jar File Root Verzeichnis
+      run: ls -al ./
+    - name: Test Jar File Libs Verzeichnis
+      run: ls -al ./build/libs/
     - name: Build and push
       id: docker_build
       uses: docker/build-push-action@v2
