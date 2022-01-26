@@ -35,7 +35,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: RestService-Jar
-        path: ~/
+        path: ./build/libs/*.jar
       
   sonarCloud:
     runs-on: ubuntu-latest
