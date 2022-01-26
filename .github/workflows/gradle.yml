@@ -24,6 +24,7 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+        cache: 'gradle'
     - name: Change gradle wrapper permissions
       run: chmod +x ./gradlew
     - name: Build with Gradle
@@ -34,14 +35,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: RestService-Jar
-        path: ./build/libs/*.jar
-    - name: Cache Java .Jar
-      uses: actions/cache@v2.1.7
-      with:
-        # A list of files, directories, and wildcard patterns to cache and restore
-        path: ./build/libs/*.jar
-        # An explicit key for restoring and saving the cache
-        key: ${{ runner.os }}-jar
+        path: ~/
       
   sonarCloud:
     runs-on: ubuntu-latest
