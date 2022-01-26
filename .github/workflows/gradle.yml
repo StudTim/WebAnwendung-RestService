@@ -35,6 +35,13 @@ jobs:
       with:
         name: RestService-Jar
         path: ./build/libs/*.jar
+    - name: Cache Java .Jar
+      uses: actions/cache@v2.1.7
+      with:
+        # A list of files, directories, and wildcard patterns to cache and restore
+        path: ./build/libs/*.jar
+        # An explicit key for restoring and saving the cache
+        key: ${{ runner.os }}-jar
       
   sonarCloud:
     runs-on: ubuntu-latest
